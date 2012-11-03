@@ -1,0 +1,8 @@
+*.txt		text
+*.TXT		text
+*.AD_PRT	binary
+*.STL		binary
+*.stl		binary
+
+*.brd		binary
+*.sch		binary
