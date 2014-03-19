@@ -19,6 +19,8 @@ void pwm_init() {
   DDRD |= 0x08 //PD3:OSC2B output
 #elif defined(__AVR_ATmega164A__) || defined(__AVR_ATmega164P__)
 	DDRD |= 0x80 | 0x40;	
+#else
+#error "UNSUPPORTED arcitecture.  Cannot continue"
 #endif
 	
 	//CTC mode, toggle on compare match A, B
