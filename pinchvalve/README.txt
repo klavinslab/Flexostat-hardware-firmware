@@ -1,7 +1,7 @@
 notes
 -----
 
-pinch_valve_pannel_ponoko.svg: this file is intended to be cut on a laser cutter
+P1-delrin laser parts-ponoko.eps: this file is intended to be cut on a laser cutter
    (or outsourced to ponoko.com)  The parts it generates are intended to work with 
    "center adapter" and inplace of pincher, center cam, and face (ie do not print 
    these three)
