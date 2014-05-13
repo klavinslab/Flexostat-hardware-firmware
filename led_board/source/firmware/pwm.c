@@ -15,13 +15,13 @@ volatile uint16_t epocht;
 void pwm_init() {
 	/******STIR INIT*******/
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328__)
-  DDRB |= 0x08 //PB3:OSC2A output 
-  DDRD |= 0x08 //PD3:OSC2B output
+	DDRB |= 0x08; //PB3:OSC2A output
+	DDRD |= 0x08; //PD3:OSC2B output
 #elif defined(__AVR_ATmega164A__) || defined(__AVR_ATmega164P__)
-	DDRD |= 0x80 | 0x40;	
+	DDRD |= 0x80 | 0x40;
 #else
 #error "UNSUPPORTED arcitecture.  Cannot continue"
-#endif
+#endif	
 	
 	//CTC mode, toggle on compare match A, B
 	TCCR2A = 0x02 | 0x40 | 0x10;
@@ -32,7 +32,7 @@ void pwm_init() {
 	OCR2A = COUNTER_TOP;
 	OCR2B = COUNTER_TOP/2;
 	
-	TIMSK2 = 1<<OCIE2A; //Enable match A interrupt.
+	TIMSK2 = 1<<OCIE2A; 
 	epocht = 0;
 	
 }

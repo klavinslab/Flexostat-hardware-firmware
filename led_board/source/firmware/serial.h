@@ -17,7 +17,6 @@
 #define TX_BUFFER_SIZE 80
 #define COMMAND_CHAR ';'
 
-
 #ifndef USART0_RX_vect
 #define USART0_RX_vect USART_RX_vect
 #endif
@@ -25,6 +24,7 @@
 #ifndef USART0_UDRE_vect
 #define USART0_UDRE_vect USART_UDRE_vect
 #endif
+
 
 /*******************FOR COMMANDS***************/
 ///////////MACROFUNCTIONS
