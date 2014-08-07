@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.5.0">
+<eagle version="7.0.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -1496,7 +1496,7 @@ http://www.sandorobotics.com/attachments/l298motores.pdf</description>
 <instance part="GND9" gate="1" x="167.64" y="81.28"/>
 <instance part="P+5" gate="1" x="167.64" y="76.2"/>
 <instance part="GND10" gate="1" x="167.64" y="55.88"/>
-<instance part="P+6" gate="1" x="302.26" y="20.32"/>
+<instance part="P+6" gate="1" x="231.14" y="27.94"/>
 <instance part="U$5" gate="G$1" x="198.12" y="91.44" rot="MR180"/>
 <instance part="U$6" gate="G$1" x="198.12" y="66.04" rot="MR180"/>
 <instance part="Q2" gate="Q" x="198.12" y="12.7"/>
@@ -1511,9 +1511,9 @@ http://www.sandorobotics.com/attachments/l298motores.pdf</description>
 <instance part="C1" gate="C" x="-7.62" y="23.622" rot="R90"/>
 <instance part="P+8" gate="1" x="190.5" y="38.1"/>
 <instance part="U2" gate="U" x="261.62" y="22.86"/>
-<instance part="GND3" gate="1" x="228.6" y="0"/>
+<instance part="GND3" gate="1" x="223.52" y="0"/>
 <instance part="GND4" gate="1" x="304.8" y="0"/>
-<instance part="P+9" gate="1" x="233.68" y="27.94"/>
+<instance part="P+9" gate="1" x="228.6" y="22.86"/>
 <instance part="J2" gate="J" x="256.54" y="86.36" rot="MR270"/>
 <instance part="GND6" gate="1" x="261.62" y="-3.81"/>
 <instance part="P+10" gate="1" x="10.16" y="86.36"/>
@@ -1562,12 +1562,6 @@ http://www.sandorobotics.com/attachments/l298motores.pdf</description>
 <pinref part="J1" gate="RJ" pin="8"/>
 </segment>
 <segment>
-<pinref part="U2" gate="U" pin="VSS"/>
-<pinref part="P+6" gate="1" pin="+12V"/>
-<wire x1="276.86" y1="15.24" x2="302.26" y2="15.24" width="0.1524" layer="91"/>
-<wire x1="302.26" y1="15.24" x2="302.26" y2="17.78" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="D1" gate="D" pin="-"/>
 <pinref part="P+12" gate="1" pin="+12V"/>
 <wire x1="218.44" y1="94.488" x2="218.44" y2="92.71" width="0.1524" layer="91"/>
@@ -1599,6 +1593,12 @@ http://www.sandorobotics.com/attachments/l298motores.pdf</description>
 <junction x="347.98" y="93.98"/>
 <junction x="347.98" y="91.44"/>
 <pinref part="P+16" gate="1" pin="+12V"/>
+</segment>
+<segment>
+<pinref part="P+6" gate="1" pin="+12V"/>
+<wire x1="231.14" y1="25.4" x2="231.14" y2="22.86" width="0.1524" layer="91"/>
+<pinref part="U2" gate="U" pin="VS"/>
+<wire x1="231.14" y1="22.86" x2="246.38" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -1657,16 +1657,16 @@ http://www.sandorobotics.com/attachments/l298motores.pdf</description>
 <segment>
 <pinref part="U2" gate="U" pin="GND@1"/>
 <pinref part="GND3" gate="1" pin="GND"/>
-<wire x1="246.38" y1="35.56" x2="228.6" y2="35.56" width="0.1524" layer="91"/>
-<wire x1="228.6" y1="35.56" x2="228.6" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="35.56" x2="223.52" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="223.52" y1="35.56" x2="223.52" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="U2" gate="U" pin="SENSE_A"/>
-<wire x1="228.6" y1="33.02" x2="228.6" y2="12.7" width="0.1524" layer="91"/>
-<wire x1="228.6" y1="12.7" x2="228.6" y2="2.54" width="0.1524" layer="91"/>
-<wire x1="246.38" y1="33.02" x2="228.6" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="223.52" y1="33.02" x2="223.52" y2="12.7" width="0.1524" layer="91"/>
+<wire x1="223.52" y1="12.7" x2="223.52" y2="2.54" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="33.02" x2="223.52" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="U2" gate="U" pin="GND@10"/>
-<wire x1="246.38" y1="12.7" x2="228.6" y2="12.7" width="0.1524" layer="91"/>
-<junction x="228.6" y="33.02"/>
-<junction x="228.6" y="12.7"/>
+<wire x1="246.38" y1="12.7" x2="223.52" y2="12.7" width="0.1524" layer="91"/>
+<junction x="223.52" y="33.02"/>
+<junction x="223.52" y="12.7"/>
 </segment>
 <segment>
 <pinref part="GND4" gate="1" pin="GND"/>
@@ -1785,17 +1785,6 @@ http://www.sandorobotics.com/attachments/l298motores.pdf</description>
 <pinref part="R2" gate="R" pin="1"/>
 </segment>
 <segment>
-<pinref part="U2" gate="U" pin="VS"/>
-<pinref part="P+9" gate="1" pin="+5V"/>
-<wire x1="246.38" y1="22.86" x2="233.68" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="233.68" y1="22.86" x2="233.68" y2="25.4" width="0.1524" layer="91"/>
-<pinref part="U2" gate="U" pin="ENA"/>
-<wire x1="246.38" y1="17.78" x2="231.14" y2="17.78" width="0.1524" layer="91"/>
-<wire x1="231.14" y1="17.78" x2="231.14" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="231.14" y1="22.86" x2="233.68" y2="22.86" width="0.1524" layer="91"/>
-<junction x="233.68" y="22.86"/>
-</segment>
-<segment>
 <pinref part="J1" gate="RJ" pin="G+"/>
 <pinref part="P+10" gate="1" pin="+5V"/>
 <wire x1="-7.62" y1="76.2" x2="10.16" y2="76.2" width="0.1524" layer="91"/>
@@ -1813,6 +1802,16 @@ http://www.sandorobotics.com/attachments/l298motores.pdf</description>
 <wire x1="276.86" y1="20.32" x2="297.18" y2="20.32" width="0.1524" layer="91"/>
 <pinref part="P+17" gate="1" pin="+5V"/>
 <wire x1="297.18" y1="20.32" x2="297.18" y2="25.4" width="0.1524" layer="91"/>
+<pinref part="U2" gate="U" pin="VSS"/>
+<wire x1="276.86" y1="15.24" x2="297.18" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="297.18" y1="20.32" x2="297.18" y2="15.24" width="0.1524" layer="91"/>
+<junction x="297.18" y="20.32"/>
+</segment>
+<segment>
+<pinref part="U2" gate="U" pin="ENA"/>
+<wire x1="246.38" y1="17.78" x2="228.6" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="17.78" x2="228.6" y2="20.32" width="0.1524" layer="91"/>
+<pinref part="P+9" gate="1" pin="+5V"/>
 </segment>
 </net>
 <net name="NC2" class="0">
