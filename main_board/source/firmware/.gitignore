@@ -1,1 +1,4 @@
-project_files
+Debug/
+*.atsln
+*.atsuo
+*.cproj
