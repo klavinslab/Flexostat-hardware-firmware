@@ -45,8 +45,9 @@ void usart_init() {
 	//ENABLE_TX_INT(); //already done
 
 	//for PV
-	PORTA &= 0xF0; //close all PVs
-	DDRA |=0xF0; //outputs
+	PORTA = 0; //close all PVs
+	DDRA = 0xFF; //outputs
+	DDRC = 0x80 | 0x40; // SPV outputs
 
 }
 
@@ -169,11 +170,21 @@ uint8_t* read_cmd(uint8_t* b) {
 
 /*****COMMAND PARSING******/
 uint8_t pv_select(uint32_t t) {
-	if (t == 0) {
-		PORTA |= 0x80 | 0x40; //open the first and second media SPV
+	if (t < 8) {
+		PORTA = 0x01<<t; //open SPV t
 	} else {
-		PORTA &= ~0x80 & ~0x40; //close all media SPV
-	}
+		PORTA = 0; //close all SPV on port A
+		PORTC &= 0x3F; //0011 1111
+		switch (t)
+		{
+		case 8:
+			PORTC |= 0x80; //PortC7
+			break;
+		case 9:
+			PORTC |= 0x40; //PortC6
+			break;
+		}
+	} 
 
 	if (t<5) {  //if mux PV 1
 		pwm_set(2,0);
@@ -194,7 +205,8 @@ uint8_t pv_close_all(uint32_t t) {
 	pwm_set(2,0);
 	pwm_set(5,0);
 	pwm_set(6,0);
-	PORTA &= 0x0F; //close all SPVs
+	PORTA = 0x00; //close all SPVs
+	PORTC &= 0x3F; //close port C SPVs
 	return 0;
 }
 uint8_t pump_move_a(uint32_t t) {
