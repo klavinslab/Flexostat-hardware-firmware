@@ -13,6 +13,7 @@ void pwm_init();
 void pwm_set(uint8_t ch, uint16_t angle);
 uint16_t millis();
 
-
+extern volatile uint8_t pulse_time[];
+extern const uint8_t pulse_time_len;
 
 #endif /* PWM_H_ */

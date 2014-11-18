@@ -41,8 +41,11 @@ uint8_t* read_cmd(uint8_t* b);
 uint8_t get_tx_len();
 
 void parse_command();
+void pv_on(uint8_t);
+void pv_off(uint8_t);
 
 extern volatile int8_t cmdflag;
+extern const uint8_t pulse_time_len;
 
 
 #endif /* SERIAL_H_ */

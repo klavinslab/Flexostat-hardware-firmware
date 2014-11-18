@@ -28,8 +28,8 @@ int main(void)
 	
 	st = millis();
 	od_select(chambers[chamber_num]);
-    while(1)
-    {
+  while(1)
+  {
 		//deal with commands while waiting
 		do {
 			while (cmdflag) {
@@ -59,6 +59,6 @@ int main(void)
 		print_char('\n');
 
 
-    }
+  }
 }
 

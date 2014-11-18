@@ -10,10 +10,9 @@
 
 #define BLOCKING_TX
 
-
 void comm_init();
 
-#define NUM_CMD 5
+#define NUM_CMD 6
 command cmdlist[NUM_CMD];
 
 volatile uint8_t rxbuf[RX_BUFFER_SIZE];
@@ -22,6 +21,8 @@ volatile uint8_t rxsp, rxlen;  //start pointer, data length 0=>empty
 volatile uint8_t txsp, txlen; //start point, data length
 //start pointer is start of valid data
 volatile int8_t cmdflag;
+volatile uint8_t pulse_time[9]= {0,0,0,0,0,0,0,0,0}; // for SPV pulse mode.
+const uint8_t pulse_time_len = (sizeof(pulse_time)/sizeof(pulse_time[0]));
 
 //init serial 8N1
 void usart_init() {
@@ -74,7 +75,6 @@ ISR(USART0_UDRE_vect) {
 	} else {
 		DISABLE_TX_INT();
 	}
-
 }
 
 //returns 0 if buffer overflow; nothing printed
@@ -165,14 +165,61 @@ uint8_t* read_cmd(uint8_t* b) {
 	return rv;
 }
 
+void pv_on(uint8_t t) {
+  if (t < 8) {
+    PORTA |= 0x01<<t; //open SPV t
+  } else {    
+    switch (t)
+    {
+    case 8:
+      PORTC |= 0x80; //PortC7
+      break;
+    case 9:
+      PORTC |= 0x40; //PortC6
+      break;
+    }
+  }
+}
 
+void pv_off(uint8_t t) {
+  if (t < 8) {
+    PORTA &= ~(0x01<<t); //open SPV t
+  } else {    
+    switch (t)
+    {
+    case 8:
+      PORTC &= ~0x80; //PortC7
+      break;
+    case 9:
+      PORTC &= ~0x40; //PortC6
+      break;
+    }
+  } 
+}
 
 
 /*****COMMAND PARSING******/
+uint8_t pulse(uint32_t t) {
+  //command: pulnmmm; 
+  //    n is chamber number,
+  //    mmm WITH leading zeros is pulse duration max 255;
+  uint8_t duration = (uint8_t)(t&0x000000FF);
+  uint8_t valve = (uint8_t)((t&0x0000FFFF)/1000);
+  
+  //compensate for closing the valve at 1 instead of zero. 
+  if (duration < 255) {
+	duration += 1; 
+  }
+  if ( valve < pulse_time_len ) {
+    pulse_time[valve]= duration;
+  } 
+  return 0;
+}
+
 uint8_t pv_select(uint32_t t) {
 	if (t < 8) {
 		PORTA = 0x01<<t; //open SPV t
-	} else {
+	} else {  
 		PORTA = 0; //close all SPV on port A
 		PORTC &= 0x3F; //0011 1111
 		switch (t)
@@ -247,14 +294,20 @@ void comm_init() {
 	cmdlist[3].str[3] = 0;
 	cmdlist[3].args = 1;
 	cmdlist[3].fn = &pump_move_a;
-	/////move pump b
-	cmdlist[4].str[0] = 'p';
-	cmdlist[4].str[1] = 'm';
-	cmdlist[4].str[2] = 'b';
-	cmdlist[4].str[3] = 0;
-	cmdlist[4].args = 1;
-	cmdlist[4].fn = &pump_move_b;
-
+  /////move pump b
+  cmdlist[4].str[0] = 'p';
+  cmdlist[4].str[1] = 'm';
+  cmdlist[4].str[2] = 'b';
+  cmdlist[4].str[3] = 0;
+  cmdlist[4].args = 1;
+  cmdlist[4].fn = &pump_move_b;
+  /////pulnmmm; pulse chamber n for mmm time 
+  cmdlist[5].str[0] = 'p';
+  cmdlist[5].str[1] = 'u';
+  cmdlist[5].str[2] = 'l';
+  cmdlist[5].str[3] = 0;
+  cmdlist[5].args = 1;
+  cmdlist[5].fn = &pulse;
 }
 
 void parse_command() {

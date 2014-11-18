@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "pwm.h"
+#include "serial.h"
 
 volatile uint16_t time;
 
@@ -65,6 +66,17 @@ void pwm_init() {
 
 ISR (TIMER1_OVF_vect) {
 	time = time+20; //interrupts happen every 20ms
+  uint8_t ch=0;
+  while (ch<pulse_time_len) {
+    if (pulse_time[ch]>1) {  //if count is big keep valve open and continue on
+      pulse_time[ch]--;
+      pv_on(ch);
+    } else if (pulse_time[ch] == 1){ //close on 1 count and do nothing on 0.
+	  pulse_time[ch]--;
+      pv_off(ch);
+    }
+	ch++;
+  }
 }
 
 uint16_t millis() {
