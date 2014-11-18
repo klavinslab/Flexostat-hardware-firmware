@@ -39,8 +39,8 @@ int main(void)
 	od_get_tx();
 	uint16_t lastepoch = epoch();
 	
-    while(1)
-    {
+	while(1)
+	{
 		ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 			curtime = epoch();
 			if ((curtime-lastepoch) >= INTEGRATION_TIME) {	
@@ -50,7 +50,7 @@ int main(void)
 			}
 		}		
 		
-        if (get_rx_len()>0) {
+		if (get_rx_len()>0) {
 			rawOD r;
 			uint8_t cnt = 0;
 			read_char();
@@ -63,5 +63,5 @@ int main(void)
 			}
 		}
 
-    }
+	}
 }
