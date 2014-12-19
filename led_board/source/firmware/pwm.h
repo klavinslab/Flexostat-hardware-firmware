@@ -9,12 +9,15 @@
 #include <avr/io.h>
 
 extern uint8_t tmr2ofcnt;
-uint32_t millis();
+uint16_t millis();
 uint16_t epoch();
 void pwm_init();
 
 /////STIR/////
+//NOTE: changing STIRS_SPEED so it is not a factor of 2000
+// will break millis().  ie 2000L/STIR_SPEED should have no remainder.
 #define STIR_SPEED 400 //edges per second
+
 //this is defined by the prescalar so don't change this!
 //unit is edges per second (i.e. steps per second)
 //prescalar is 1/1024.  2 edges per timer overflow, 8mhz

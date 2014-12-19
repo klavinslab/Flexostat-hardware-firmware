@@ -9,6 +9,7 @@
 #include <avr/interrupt.h>
 
 volatile uint16_t epocht;
+volatile uint16_t millist;
 
 //setup stir motor PWM
 //TODO: convert this to work with timer2
@@ -40,14 +41,16 @@ void pwm_init() {
 //one epoch is 2/STIR_SPEED seconds
 ISR (TIMER2_COMPA_vect) {
 	epocht++;	
+  millist += (2000L/STIR_SPEED);
 }
 
 //this is a low res estimate of current time
 // it is roughly 2/STIR_SPEED of a second accurate.
 // ie for STIR_SPEED=400 it is accurate to +/- 5 millis
-uint32_t millis() {
-	//note last set of () kills percision, but right now it divides evenly.
-	return (epocht*(2000L/STIR_SPEED));
+// Over flows ever minute or so.
+// Note: millis will be off if 2000L/STIR_SPEED has a remainder.
+uint16_t millis() {
+  return millist;
 }
 
 uint16_t epoch() {
