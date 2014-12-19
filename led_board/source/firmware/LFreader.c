@@ -33,6 +33,7 @@ int main(void)
   uint16_t cur_time;
   uint16_t close_time=0;
   DDRB = 0x01<<1;
+  PORTD = 0x01<<6; // pull D6 high to enable stirring.
   pwm_init();
   usart_init();
   od_init();
