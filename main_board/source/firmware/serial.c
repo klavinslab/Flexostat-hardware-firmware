@@ -217,11 +217,11 @@ uint8_t pulse(uint32_t t) {
 }
 
 uint8_t pv_select(uint32_t t) {
-	if (t < 8) {
+	PORTC &= 0x3F; //0011 1111
+	if (t < 8) { 
 		PORTA = 0x01<<t; //open SPV t
 	} else {  
 		PORTA = 0; //close all SPV on port A
-		PORTC &= 0x3F; //0011 1111
 		switch (t)
 		{
 		case 8:
