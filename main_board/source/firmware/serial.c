@@ -1,5 +1,6 @@
 #include "serial.h"
 #include "pwm.h"
+#include "i2c.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdlib.h>
@@ -217,6 +218,12 @@ uint8_t pulse(uint32_t t) {
 }
 
 uint8_t pv_select(uint32_t t) {
+	//i2c pv
+	if (t>0 && t<9) {
+		master_send_i2c(114, (uint8_t) (t-1+'0'));
+	}
+	
+	//SPV
 	PORTC &= 0x3F; //0011 1111
 	if (t < 8) { 
 		PORTA = 0x01<<t; //open SPV t
@@ -233,6 +240,7 @@ uint8_t pv_select(uint32_t t) {
 		}
 	} 
 
+	//servo
 	if (t<5) {  //if mux PV 1
 		pwm_set(2,0);
 		pwm_set(1,(uint16_t)t*45*20);

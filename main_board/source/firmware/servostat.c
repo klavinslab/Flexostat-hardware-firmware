@@ -10,6 +10,7 @@
 #include "serial.h"
 #include "od.h"
 #include "pwm.h"
+#include "i2c.h"
 
 //uint8_t chambers[] = {4,0,1,5,2,6,3,7};
 uint8_t chambers[] = {0,1,2,3,4,5,6,7};
@@ -24,6 +25,7 @@ int main(void)
 	usart_init();
 	od_init();
 	pwm_init();
+	i2c_master_init();
 	sei();
 	
 	st = millis();
