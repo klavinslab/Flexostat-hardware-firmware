@@ -1,22 +1,23 @@
 //options:
 heater_cut_size = 0; //0=off -- Experimental
+fan_stir = 1; //0=stepper motor stir, 1=20mm fan stir
 
 //general parameters
 tap_hole_632 = 2.95;
 splitter_size = 12; //12mmx12mm microscope slide
 laser_length = 17;
-laser_dia = 7;
+laser_dia = 7.1;
 laser_path_dia = 5;
 laser_path_height = 30;
 wall_thickness = 1.5;
 
 //tube parameters
-tube_diameter = 12.95*2; //pyrex vista 25mm tube //actual diameter 25.0mm
+tube_diameter = 25.7; //chemglass 25mmx100mm //actual dia 24.7
 //tube_diameter = 12.2*2; //kimax 24mm cfuge tube //actual diameter 23.8mm
 tube_holder_wall = wall_thickness; 
 tube_holder_height = 100;
 tube_window_width = 12;
-tab_depth = 0.5;
+tab_depth = 1;
 
 //PCB parameters.  These can't change without changing the PCB
 sensor_holesize = [3,5];
@@ -36,7 +37,10 @@ laser_end_x = 43;
 //Stir motor parameters
 hole_dist = 42;
 motor_mount_angle = 30;
-
+//
+fan_hole_dist = 32;
+fan_hole_dia = 0.1495*25.4+.1; //clearance fit for 6-32
+magnet_depth = fan_stir==1? 4.2 : 15; //fan depth : stepper depth
 
 //derived parameters
 splitter_center_x = abs(tx_llc[0])+sensor_holesize[1]/2;
@@ -54,8 +58,8 @@ difference() {
     tube_holder(tube_diameter);
     translate([0,0,laser_path_height+tube_holder_wall]) 
       PCB_and_optics();
-    rotate([0,0,motor_mount_angle]) translate([0,0,-15]) 
-      stir_holder(15,tube_diameter,hole_dist,window=false); // do window later
+    rotate([0,0,motor_mount_angle]) translate([0,0,-magnet_depth]) 
+      stir_holder(magnet_depth,tube_diameter,hole_dist,window=false,fan=fan_stir); // do window later
   }
   //negative parts of tube holder and laser/pcb holder
   tube_holder_negative_parts(tube_diameter);
@@ -65,8 +69,10 @@ difference() {
   //windows TODO: refactor into tube_holder_negative_parts
   translate([-tube_window_width/2,-50,tube_holder_wall+10]) 
     cube([tube_window_width,100,tube_holder_height*0.70], center=false);
-  translate([-tube_window_width/2,-50,-10]) 
-    cube([tube_window_width,100,10], center=false);
+  if(fan_stir==0){
+    translate([-tube_window_width/2,-50,-10]) 
+      cube([tube_window_width,100,10], center=false);
+  }
   if (heater_cut_size>0) {
     translate([0,0,heater_cut_size/2])
     rect_helix(10,tube_holder_height,tube_diameter/2+heater_cut_size/2,heater_cut_size,300);
@@ -78,28 +84,42 @@ tube_tabs(tube_diameter);
 //Modules                      //
 /////////////////////////////////
 
-module stir_holder(h,td,hole_offset,window=false){
+module stir_holder(h,td,hole_offset,window=false,fan=0){
   $fn=100;
-  difference() {
-    union() {
-      difference() {
-        hull() {
+  if (fan==0) {
+    difference() {
+      union() {
+        difference() {
+          hull() {
+            for(i = [hole_offset/2, -hole_offset/2]) {
+              translate([i,0,0])
+                cylinder(h=h,d=tap_hole_632+wall_thickness*2, center=false);
+            } 
+          }
           for(i = [hole_offset/2, -hole_offset/2]) {
             translate([i,0,0])
-              cylinder(h=h,d=tap_hole_632+wall_thickness*2, center=false);
+              cylinder(h=h,d=tap_hole_632, center=false);
           } 
         }
-        for(i = [hole_offset/2, -hole_offset/2]) {
-          translate([i,0,0])
-            cylinder(h=h,d=tap_hole_632, center=false);
-        } 
+        cylinder(h=h, d=outer_diameter, center = false);
       }
-      cylinder(h=h, d=outer_diameter, center = false);
+      cylinder(h=h, d=td);
+      if(window) {
+        translate([-tube_window_width/2,-50,5]) 
+          cube([tube_window_width,100,h-5], center=false);
+      }
     }
-    cylinder(h=h, d=td);
-    if(window) {
-      translate([-tube_window_width/2,-50,5]) 
-        cube([tube_window_width,100,h-5], center=false);
+  }
+  else {
+    difference() {
+      translate([-20,-20]) v_rounded_cube([40,40,h],4);
+      for(x = [fan_hole_dist/2,-fan_hole_dist/2]) {
+        for(y = [fan_hole_dist/2,-fan_hole_dist/2]) {
+          translate([x,y,0])
+            cylinder(h=2.1*h,d=fan_hole_dia , center=true,$fn=50);
+        }
+      }
+      cylinder(h=h,d=tube_diameter,center=false);
     }
   }
 }
@@ -222,5 +242,22 @@ module rect_helix(turns,height,r,cutsize,slices=100) {
       }
     }
     cylinder(h=height,r=r*2);
+  }
+}
+
+
+module v_rounded_cube(xyz,r,$fn=30) {
+  z = xyz[2];
+  y = xyz[1];
+  x = xyz[0];
+  translate([r,r])
+  hull() {
+    cylinder(h=z,r=r);
+    translate([0,y-2*r])
+    cylinder(h=z,r=r);
+    translate([x-2*r,0])
+    cylinder(h=z,r=r);
+    translate([x-2*r,y-2*r])
+    cylinder(h=z,r=r);
   }
 }
