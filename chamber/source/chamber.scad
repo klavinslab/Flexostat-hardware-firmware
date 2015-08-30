@@ -110,7 +110,7 @@ module stir_holder(h,td,hole_offset,window=false,fan=0){
       }
     }
   }
-  else {
+  else { //fan holder
     difference() {
       translate([-20,-20]) v_rounded_cube([40,40,h],4);
       for(x = [fan_hole_dist/2,-fan_hole_dist/2]) {
@@ -173,11 +173,12 @@ module PCB_holes(screw_hole_dia) {
       square(sensor_holesize,center=false);
     translate(tx_llc)
       square([sensor_holesize[1],sensor_holesize[0]],center=false);
+  }
+  linear_extrude(height=40,center = true ,convexity=10  )
     for (xy = PCB_hole_locations) {
       translate(xy)
         circle(d=screw_hole_dia);
     }
-  }
   color("gray") translate([ethernet_ulc[0],
     ethernet_ulc[1]-ethernet_size[1],
     sensor_depth-ethernet_depth])
