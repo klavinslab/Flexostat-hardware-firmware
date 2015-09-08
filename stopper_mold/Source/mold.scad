@@ -4,15 +4,18 @@
 //anything else = all
 // You must render and print all 3
 part = 3;
+tube_id = 22.2; // chemglass 25mm tube -> 22.2, kimble cfuge -> 20.3
 
 stopper_height = 20;
-stopper_d1 = 20;
-stopper_d2 = 25;
-sstube_d = 2.2;
+stopper_d1 = tube_id-0.3;
+stopper_d2 = tube_id+5;
+sstube_d = 2.2+0.4; //small holes need extradilation
 shell_thickness = 1.6;
 sstube_loc = [[0,0],[7.5,0],[-7.5,0]];
 sstube_len = [40,10,10]; //tube length below stopper
 screw_hole_d = 0.156*25.4; 
+
+epsilon = 0.01;
 
 //derived
 shell_t = shell_thickness; //shortcut
@@ -32,7 +35,7 @@ intersection() {
 		//ss tube holes
 		sstube_holes(sstube_loc,sstube_len,sstube_d);
 		//make most of the tube holes a bit bigger.
-		translate([0,0,-shell_t]) sstube_holes(sstube_loc,sstube_len,sstube_d+0.2);
+		translate([0,0,-shell_t]) sstube_holes(sstube_loc,sstube_len,sstube_d+0.4);
 	}
 	if (part == 1) {
 		cylinder(h=300,r=300);
@@ -42,7 +45,7 @@ intersection() {
 		cylinder(h=shell_t,r=300);
 	}
 	if (part == 3) {
-		translate([0, 0, -shell_t]) mirror([0,0,1])
+		translate([0, 0, -shell_t-epsilon]) mirror([0,0,1])
 		cylinder(h=300,r=300);
 	}
 }

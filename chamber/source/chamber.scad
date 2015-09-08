@@ -40,7 +40,7 @@ motor_mount_angle = 30;
 //
 fan_hole_dist = 32;
 fan_hole_dia = 0.1495*25.4+.1; //clearance fit for 6-32
-magnet_depth = fan_stir==1? 4.2 : 15; //fan depth : stepper depth
+magnet_depth = fan_stir==1? 5.1+tube_holder_wall : 15; //fan depth : stepper depth
 
 //derived parameters
 splitter_center_x = abs(tx_llc[0])+sensor_holesize[1]/2;
@@ -111,15 +111,16 @@ module stir_holder(h,td,hole_offset,window=false,fan=0){
     }
   }
   else { //fan holder
+    translate([0,0,tube_holder_wall])
     difference() {
       translate([-20,-20]) v_rounded_cube([40,40,h],4);
       for(x = [fan_hole_dist/2,-fan_hole_dist/2]) {
         for(y = [fan_hole_dist/2,-fan_hole_dist/2]) {
           translate([x,y,0])
-            cylinder(h=2.1*h,d=fan_hole_dia , center=true,$fn=50);
+            cylinder(h=2.1*h,d=fan_hole_dia , center=true,$fn=30);
         }
       }
-      cylinder(h=h,d=tube_diameter,center=false);
+      cylinder(h=(h-tube_holder_wall)*2 ,d=32,center=true);
     }
   }
 }
