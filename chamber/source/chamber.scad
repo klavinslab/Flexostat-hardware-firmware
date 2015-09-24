@@ -17,7 +17,7 @@ tube_diameter = 25.7; //chemglass 25mmx100mm //actual dia 24.7
 tube_holder_wall = wall_thickness; 
 tube_holder_height = 100;
 tube_window_width = 12;
-tab_depth = 1;
+tab_depth = 1.75;
 
 //PCB parameters.  These can't change without changing the PCB
 sensor_holesize = [3,5];
@@ -30,16 +30,16 @@ PCB_rect_holecenter = [1.3*25.4,0];
 PCB_height=25;
 ethernet_ulc = [(2-0.55)*25.4,-3-1];
 ethernet_size =[17,17];
-ethernet_depth = 2;
+ethernet_depth = 1.7;
 PCB_tube_hole_diameter = 30; 
-laser_end_x = 43;  
+laser_end_x = 42.5;  
 
 //Stir motor parameters
 hole_dist = 42;
 motor_mount_angle = 30;
 //
 fan_hole_dist = 32;
-fan_hole_dia = 0.1495*25.4+.1; //clearance fit for 6-32
+fan_hole_dia = 0.1495*25.4+.3; //clearance fit for 6-32
 magnet_depth = fan_stir==1? 5.1+tube_holder_wall : 15; //fan depth : stepper depth
 
 //derived parameters
