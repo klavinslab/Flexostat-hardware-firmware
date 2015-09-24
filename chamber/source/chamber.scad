@@ -118,6 +118,8 @@ module stir_holder(h,td,hole_offset,window=false,fan=0){
         for(y = [fan_hole_dist/2,-fan_hole_dist/2]) {
           translate([x,y,0])
             cylinder(h=2.1*h,d=fan_hole_dia , center=true,$fn=30);
+          translate([x-10/2+2*x/abs(x),y-10/2+2*y/abs(y),h-2])
+            v_rounded_cube([10,10,3],r=2);
         }
       }
       cylinder(h=(h-tube_holder_wall)*2 ,d=32,center=true);
