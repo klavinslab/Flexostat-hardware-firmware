@@ -22,11 +22,16 @@ difference() {
 }
 
 module PCB_holes(LR_corner){
-  hole_locs = [ [0.6,0.75],[0.6,2.2],[2.95,2.2], [3.6,0.75],
-                [2.95,0.75],[3.6,2.2],[-0.05,0.75],[-0.05,2.2] ]*24.5;
+  //hole_locs = [ [0.6,0.75],[0.6,2.2],[2.95,2.2], [3.6,0.75],
+                //[2.95,0.75],[3.6,2.2],[-0.05,0.75],[-0.05,2.2] ]*24.5;
+  hole_x = [0.6,2.95,3.6,-0.05]*25.4;
+  hole_y = [0.75,2.2]*25.4;
   translate(LR_corner) rotate([0,0 ,90 ])
-  for (loc = hole_locs) {
-    translate(loc) circle(d=3.8*circ_comp);
+  for (xx = hole_x) {
+    for (yy = hole_y) {
+
+      translate([xx,yy]) circle(d=3.8*circ_comp);
+    }
   }
 }
 
